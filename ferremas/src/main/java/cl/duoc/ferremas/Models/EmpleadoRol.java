@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
@@ -27,7 +29,8 @@ public class EmpleadoRol {
     private LocalTime horaRegistro; 
 
 
-    @OneToMany(mappedBy = "emp_rol", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "rolEmpleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Empleado> empleados = new ArrayList<>();
 
 

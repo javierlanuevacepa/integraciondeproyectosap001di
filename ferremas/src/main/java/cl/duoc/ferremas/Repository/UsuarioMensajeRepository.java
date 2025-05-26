@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 
+
+@Repository
 public interface UsuarioMensajeRepository extends JpaRepository<UsuarioMensaje, Long> {
     // Buscar todos los mensajes recibidos por un vendedor
-    List<UsuarioMensaje> findByVendedorIdEmp(Long idVendedor);
+   // List<UsuarioMensaje> findByEmpleadoIdEmpleado(Long idEmpleado);
 
     // Buscar todos los mensajes enviados por un cliente
-    List<UsuarioMensaje> findByClienteIdUsuario(Long idCliente);
+    //List<UsuarioMensaje> findByUsuarioIdUsuario(Long idUsuario);
 }

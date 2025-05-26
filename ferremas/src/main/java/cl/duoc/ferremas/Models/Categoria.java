@@ -7,6 +7,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "categoria")
@@ -31,7 +33,8 @@ public class Categoria {
     @Column(name = "hora_registro", nullable = false)
     private LocalTime horaRegistro;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "categoriaP", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Producto> productos = new ArrayList<>();
 
     public Categoria() {
@@ -54,12 +57,12 @@ public class Categoria {
         this.productos = productos;
     }
 
-    public Categoria( String nombreCategoria, String descripcionCategoria, LocalDate fechaRegistro, LocalTime horaRegistro) {
+    public Categoria( String nombreCategoria, String descripcionCategoria) {
 
         this.nombreCategoria = nombreCategoria;
         this.descripcionCategoria = descripcionCategoria;
-        this.fechaRegistro = fechaRegistro;
-        this.horaRegistro = horaRegistro;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public Long getIdCategoria() {

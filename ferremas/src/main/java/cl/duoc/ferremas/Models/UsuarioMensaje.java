@@ -19,8 +19,8 @@ public class UsuarioMensaje {
     private Usuario cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_vendedor", nullable = false)
-    private Empleado vendedor;
+    @JoinColumn(name = "id_empleado", nullable = false)
+    private Empleado empleado;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String contenido;
@@ -36,10 +36,10 @@ public class UsuarioMensaje {
     public UsuarioMensaje() {
     }
 
-    public UsuarioMensaje(Long idMensaje, Usuario cliente, Empleado vendedor, String contenido, LocalDate fechaRegistro, LocalTime horaRegistro) {
+    public UsuarioMensaje(Long idMensaje, Usuario cliente, Empleado empleado, String contenido, LocalDate fechaRegistro, LocalTime horaRegistro) {
         this.idMensaje = idMensaje;
         this.cliente = cliente;
-        this.vendedor = vendedor;
+        this.empleado = empleado;
         this.contenido = contenido;
         this.fechaRegistro = fechaRegistro;
         this.horaRegistro = horaRegistro;
@@ -61,12 +61,12 @@ public class UsuarioMensaje {
         this.cliente = cliente;
     }
 
-    public Empleado getVendedor() {
-        return this.vendedor;
+    public Empleado getempleado() {
+        return this.empleado;
     }
 
-    public void setVendedor(Empleado vendedor) {
-        this.vendedor = vendedor;
+    public void setempleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 
     public String getContenido() {
@@ -103,8 +103,8 @@ public class UsuarioMensaje {
         return this;
     }
 
-    public UsuarioMensaje vendedor(Empleado vendedor) {
-        setVendedor(vendedor);
+    public UsuarioMensaje empleado(Empleado empleado) {
+        setempleado(empleado);
         return this;
     }
 
@@ -130,7 +130,7 @@ public class UsuarioMensaje {
         return "{" +
             " idMensaje='" + getIdMensaje() + "'" +
             ", cliente='" + getCliente() + "'" +
-            ", vendedor='" + getVendedor() + "'" +
+            ", empleado='" + getempleado() + "'" +
             ", contenido='" + getContenido() + "'" +
             ", fechaRegistro='" + getFechaRegistro() + "'" +
             ", horaRegistro='" + getHoraRegistro() + "'" +

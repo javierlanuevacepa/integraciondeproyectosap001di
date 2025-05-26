@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -26,7 +28,8 @@ public class Marca {
     @Column(name = "hora_registro", nullable = false)
     private LocalTime horaRegistro;
 
-    @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "marcaP", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Producto> productos = new ArrayList<>();
 
     public Marca() {
@@ -49,11 +52,10 @@ public class Marca {
 
 
 
-    public Marca( String nombreMarca, LocalDate fechaRegistro, LocalTime horaRegistro) {
-   
+    public Marca( String nombreMarca) {
         this.nombreMarca = nombreMarca;
-        this.fechaRegistro = fechaRegistro;
-        this.horaRegistro = horaRegistro;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public Long getIdMarca() {

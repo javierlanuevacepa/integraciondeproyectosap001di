@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "empleado")
@@ -16,10 +18,12 @@ public class Empleado {
     private Long idEmpleado;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_rol", nullable = false)
     private EmpleadoRol rolEmpleado; 
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_sucursal", nullable = false)
     private Sucursal sucursalEmpleado;
 
@@ -98,6 +102,22 @@ public class Empleado {
         this.fechaRegistro = fechaRegistro;
         this.horaRegistro = horaRegistro;
         this.mensajesRecibidos = mensajesRecibidos;
+    }
+
+    public Empleado( EmpleadoRol rolEmpleado, Sucursal sucursalEmpleado, String rutUsuario, String digitoVerificador, String pNombre, String sNombre, String pApellido, String sApellido, String correoEmp, String nombreUsuario, String contrasena) {
+        this.rolEmpleado = rolEmpleado;
+        this.sucursalEmpleado = sucursalEmpleado;
+        this.rutUsuario = rutUsuario;
+        this.digitoVerificador = digitoVerificador;
+        this.pNombre = pNombre;
+        this.sNombre = sNombre;
+        this.pApellido = pApellido;
+        this.sApellido = sApellido;
+        this.correoEmp = correoEmp;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public Long getIdEmpleado() {
@@ -184,6 +204,10 @@ public class Empleado {
         return this.nombreUsuario;
     }
 
+    public String getNombreSucursal(){
+        return this.getSucursalEmpleado().getNombreSucursal();
+    }
+
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -206,6 +230,10 @@ public class Empleado {
 
     public LocalTime getHoraRegistro() {
         return this.horaRegistro;
+    }
+
+    public String getDescRolEmpleado(){
+        return this.rolEmpleado.getDescripcionRol();
     }
 
     public void setHoraRegistro(LocalTime horaRegistro) {

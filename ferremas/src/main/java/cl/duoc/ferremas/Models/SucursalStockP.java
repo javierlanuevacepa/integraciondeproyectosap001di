@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "sucursal_stock_p")
@@ -13,10 +15,12 @@ public class SucursalStockP {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_sucursal", nullable = false)
     private Sucursal sucursal;
 
@@ -47,6 +51,14 @@ public class SucursalStockP {
         this.horaRegistro = horaRegistro;
     }
 
+    public SucursalStockP( Producto producto, Sucursal sucursal, Integer cStock) {
+        this.producto = producto;
+        this.sucursal = sucursal;
+        this.cStock = cStock;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -57,6 +69,19 @@ public class SucursalStockP {
 
     public Producto getProducto() {
         return this.producto;
+    }
+
+
+    public Long getIdSucursal(){
+        return this.sucursal.getIdSucursal();
+    }
+
+    public Long getIdProducto(){
+        return this.producto.getIdProducto();
+    }
+
+    public String getNombreProducto(){
+        return this.producto.getNombreProducto();
     }
 
     public void setProducto(Producto producto) {

@@ -8,6 +8,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 
@@ -22,10 +25,12 @@ public class Producto {
 
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_marca", nullable = false)
     private Marca marcaP; 
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoriaP; 
 
@@ -46,10 +51,12 @@ public class Producto {
     private LocalTime horaRegistro;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<SucursalStockP> sucursalStock = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<PrecioPHistorial> historialPrecios = new ArrayList<>();
 
 
@@ -79,14 +86,14 @@ public class Producto {
         this.historialPrecios = historialPrecios;
     }
 
-    public Producto( Marca marcaP, Categoria categoriaP, String codigoProducto, String nombreProducto, BigDecimal precioP, LocalDate fechaRegistro, LocalTime horaRegistro) {
+    public Producto( Marca marcaP, Categoria categoriaP, String codigoProducto, String nombreProducto, BigDecimal precioP) {
         this.marcaP = marcaP;
         this.categoriaP = categoriaP;
         this.codigoProducto = codigoProducto;
         this.nombreProducto = nombreProducto;
         this.precioP = precioP;
-        this.fechaRegistro = fechaRegistro;
-        this.horaRegistro = horaRegistro;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public Long getIdProducto() {

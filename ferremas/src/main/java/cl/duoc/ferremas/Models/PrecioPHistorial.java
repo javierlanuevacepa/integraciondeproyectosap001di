@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 
 @Entity
@@ -17,14 +19,20 @@ public class PrecioPHistorial {
     private Long idHistorial; // necesitas una PK si vas a manejar historial fácilmente
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
     private BigDecimal precioP;
+
     private LocalDate fechaRegistro;
     private LocalTime horaRegistro;
 
+
+    @Column(name = "fecha_fin", nullable = true)
     private LocalDate fechaFin;
+
+    @Column(name = "hora_fin", nullable = true)
     private LocalTime horaFin;
     
 
@@ -33,24 +41,21 @@ public class PrecioPHistorial {
     public PrecioPHistorial() {
     }
 
-    public PrecioPHistorial(Long idHistorial, Producto producto, BigDecimal precioP, LocalDate fechaRegistro, LocalTime horaRegistro, LocalDate fechaFin, LocalTime horaFin) {
+    public PrecioPHistorial(Long idHistorial, Producto producto, BigDecimal precioP, LocalDate fechaFin, LocalTime horaFin) {
         this.idHistorial = idHistorial;
         this.producto = producto;
         this.precioP = precioP;
-        this.fechaRegistro = fechaRegistro;
-        this.horaRegistro = horaRegistro;
+
         this.fechaFin = fechaFin;
         this.horaFin = horaFin;
     }
 
-    public PrecioPHistorial( Producto producto, BigDecimal precioP, LocalDate fechaRegistro, LocalTime horaRegistro, LocalDate fechaFin, LocalTime horaFin) {
-
+    public PrecioPHistorial( Producto producto, BigDecimal precioP) {
         this.producto = producto;
         this.precioP = precioP;
-        this.fechaRegistro = fechaRegistro;
-        this.horaRegistro = horaRegistro;
-        this.fechaFin = fechaFin;
-        this.horaFin = horaFin;
+
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public Long getIdHistorial() {
@@ -77,20 +82,17 @@ public class PrecioPHistorial {
         this.precioP = precioP;
     }
 
-    public LocalDate getFechaRegistro() {
+    public void finalizarPrecio(){
+        setFechaFin(LocalDate.now());
+        setHoraFin(LocalTime.now());
+    }
+
+    public LocalDate getFechaRegistro(){
         return this.fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public LocalTime getHoraRegistro() {
+    public LocalTime getHoraRegistro(){
         return this.horaRegistro;
-    }
-
-    public void setHoraRegistro(LocalTime horaRegistro) {
-        this.horaRegistro = horaRegistro;
     }
 
     public LocalDate getFechaFin() {
@@ -124,15 +126,6 @@ public class PrecioPHistorial {
         return this;
     }
 
-    public PrecioPHistorial fechaRegistro(LocalDate fechaRegistro) {
-        setFechaRegistro(fechaRegistro);
-        return this;
-    }
-
-    public PrecioPHistorial horaRegistro(LocalTime horaRegistro) {
-        setHoraRegistro(horaRegistro);
-        return this;
-    }
 
     public PrecioPHistorial fechaFin(LocalDate fechaFin) {
         setFechaFin(fechaFin);
@@ -151,8 +144,6 @@ public class PrecioPHistorial {
             " idHistorial='" + getIdHistorial() + "'" +
             ", producto='" + getProducto() + "'" +
             ", precioP='" + getPrecioP() + "'" +
-            ", fechaRegistro='" + getFechaRegistro() + "'" +
-            ", horaRegistro='" + getHoraRegistro() + "'" +
             ", fechaFin='" + getFechaFin() + "'" +
             ", horaFin='" + getHoraFin() + "'" +
             "}";

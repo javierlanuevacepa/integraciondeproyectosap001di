@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "sucursal")
@@ -27,11 +29,13 @@ public class Sucursal {
 
 
     // 🚹 Relación con empleados
-    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sucursalEmpleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Empleado> empleados = new ArrayList<>();
 
     // 📦 Relación con productos en stock
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<SucursalStockP> stockProductos = new ArrayList<>();
 
 

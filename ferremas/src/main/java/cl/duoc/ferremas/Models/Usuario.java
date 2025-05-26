@@ -28,7 +28,7 @@ public class Usuario {
     @Column(name = "hora_registro", nullable = false)
     private LocalTime horaRegistro;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "cliente")
     private List<UsuarioMensaje> mensajesEnviados;
 
     
