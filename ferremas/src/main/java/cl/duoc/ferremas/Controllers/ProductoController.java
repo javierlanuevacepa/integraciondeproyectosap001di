@@ -1,4 +1,5 @@
 package cl.duoc.ferremas.Controllers;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,8 +59,20 @@ public class ProductoController {
         .body(product); // Body con el empleado creado
     }
     
-    
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Producto>> buscarProductos(
+        @RequestParam(required = false) String nombre,
+        @RequestParam(required = false) String categoria,
+        @RequestParam(required = false) String codigo,
+        @RequestParam(required = false) String marca,
+        @RequestParam(required = false) Integer stockMaximo
+    ) {
+        List<Producto> resultados = productoService.listarProductoConFiltros(nombre, categoria,codigo, marca, stockMaximo);
+        return ResponseEntity.ok(resultados);
+    }
 
+
+    
 
 
 }

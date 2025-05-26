@@ -1,65 +1,81 @@
 package cl.duoc.ferremas.Config;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import cl.duoc.ferremas.Repository.CategoriaRepository;
-import cl.duoc.ferremas.Repository.EmpleadoRepository;
-import cl.duoc.ferremas.Repository.EmpleadoRolRepository;
-import cl.duoc.ferremas.Repository.MarcaRepository;
-import cl.duoc.ferremas.Repository.SucursalRepository;
+import cl.duoc.ferremas.Repository.*;
 import cl.duoc.ferremas.Models.EmpleadoRol;
 import cl.duoc.ferremas.Models.Marca;
+import cl.duoc.ferremas.Models.PrecioPHistorial;
+import cl.duoc.ferremas.Models.Producto;
 import cl.duoc.ferremas.Models.Categoria;
 import cl.duoc.ferremas.Models.Empleado;
 import cl.duoc.ferremas.Models.Sucursal;
+import cl.duoc.ferremas.Models.SucursalStockP;
+import cl.duoc.ferremas.Models.ModelsDTO.ProductoRDTO;
 
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
+   
+
     private final EmpleadoRolRepository empleadoRolRepository;
-
     private final SucursalRepository sucursalRepository;
-
     private final EmpleadoRepository empleadoRepository;
-
     private final MarcaRepository marcaRepository;
-
     private final CategoriaRepository categoriaRepository;
+    private final ProductoRepository productoRepository;
+    private final SucursalStockPRepository sucursalStockPRepository;
+    private final PrecioPHistorialRepository precioPHistorialRepository;
+
+
 
     public DataInitializer(EmpleadoRolRepository empleadoRolRepository,SucursalRepository sucursalRepository,
-    EmpleadoRepository empleadoRepository,MarcaRepository marcaRepository,CategoriaRepository categoriaRepository) {
+    EmpleadoRepository empleadoRepository,MarcaRepository marcaRepository,CategoriaRepository categoriaRepository,
+    ProductoRepository productoRepository,SucursalStockPRepository sucursalStockPRepository,PrecioPHistorialRepository precioPHistorialRepository) {
         this.empleadoRolRepository = empleadoRolRepository;
         this.sucursalRepository = sucursalRepository;
         this.empleadoRepository = empleadoRepository;
         this.marcaRepository = marcaRepository;
         this.categoriaRepository = categoriaRepository;
+        this.productoRepository = productoRepository;
+        this.sucursalStockPRepository = sucursalStockPRepository;
+        this.precioPHistorialRepository = precioPHistorialRepository;
     }
+
+
+
+
 
     @Override
     public void run(String... args) {
-        if (empleadoRolRepository.count() == 0) {
+
+
+        if (empleadoRolRepository.count() == 0 && marcaRepository.count() == 0 && categoriaRepository.count() == 0 && sucursalRepository.count() == 0
+           && productoRepository.count() == 0) {
             empleadoRolRepository.save(new EmpleadoRol("Administrador", LocalDate.now(), LocalTime.now()));
             empleadoRolRepository.save(new EmpleadoRol("Vendedor/Encargado", LocalDate.now(), LocalTime.now()));
             empleadoRolRepository.save(new EmpleadoRol("Bodeguero", LocalDate.now(), LocalTime.now()));
             empleadoRolRepository.save(new EmpleadoRol("Contador", LocalDate.now(), LocalTime.now()));
-        }
+       
 
-        if (marcaRepository.count() == 0){
-            marcaRepository.save(new Marca("Baucker"));
-            marcaRepository.save(new Marca("CAT"));
+        
+            Marca marca1 = marcaRepository.save(new Marca("Baucker"));
+            Marca marca2 = marcaRepository.save(new Marca("CAT"));
             marcaRepository.save(new Marca("Bosch"));
             marcaRepository.save(new Marca("Stanley"));
             marcaRepository.save(new Marca("Truper"));
-        }
+       
 
-        if (categoriaRepository.count() == 0){
-            categoriaRepository.save(new Categoria("Herramientas manuales", "Martillos, destornilladores, llaves, alicates, sierras"));
-            categoriaRepository.save(new Categoria("Herramientas eléctricas", "Taladros, esmeriles, sierras eléctricas, atornilladores, rotomartillos"));
+        
+            Categoria categoria1 = categoriaRepository.save(new Categoria("Herramientas manuales", "Martillos, destornilladores, llaves, alicates, sierras"));
+            Categoria categoria2 = categoriaRepository.save(new Categoria("Herramientas eléctricas", "Taladros, esmeriles, sierras eléctricas, atornilladores, rotomartillos"));
             categoriaRepository.save(new Categoria("Pinturas y accesorios", "Pinturas al agua, esmaltes, rodillos, brochas, diluyentes"));
             categoriaRepository.save(new Categoria("Electricidad", "Interruptores, enchufes, cables, ampolletas, tableros eléctricos"));
             categoriaRepository.save(new Categoria("Iluminación", "Ampolletas LED, tubos fluorescentes, lámparas, focos exteriores"));
@@ -73,9 +89,9 @@ public class DataInitializer implements CommandLineRunner {
             categoriaRepository.save(new Categoria("Seguridad industrial", "Cascos, guantes, lentes de seguridad, mascarillas, ropa de trabajo"));
             categoriaRepository.save(new Categoria("Jardinería", "Palas, rastrillos, mangueras, regadores, tijeras de poda"));
             categoriaRepository.save(new Categoria("Limpieza", "Escobas, traperos, detergentes, cloro, guantes"));
-        }
+       
 
-        if (sucursalRepository.count() == 0){
+     
 
             Sucursal nvaEra = new Sucursal("Sucursal Nueva Era","Cantagallo 234",LocalDate.now(),LocalTime.now());
             Sucursal sRepu = new Sucursal("Sucursal Republica","Avenida España 123",LocalDate.now(),LocalTime.now());
@@ -101,7 +117,22 @@ public class DataInitializer implements CommandLineRunner {
             empleadoRepository.save(new Empleado(bodeguero, sRepu, "78901234", "7", "Pedro", "Andres", "Soto", "Cano", "pedrosc@gmail.com", "pe.soto", "bode123"));
             empleadoRepository.save(new Empleado(contador, sRepu, "89012345", "8", "Valeria", "Fernanda", "Pizarro", "Aguilar", "valeria.pa@gmail.com", "va.pizarro", "conta789"));
 
+
+            ProductoRDTO productoR1 = new ProductoRDTO("Baucker","Herramientas manuales","Martillo carpintero",new BigDecimal(5000),10);
+            ProductoRDTO productoR2 = new ProductoRDTO("CAT","Herramientas eléctricas","Taladro estandar",new BigDecimal(5000),10);
+
+            Producto producto1 = productoRepository.save(new Producto(marca1,categoria1,productoR1.generarCodigo(),"Martillo carpintero",new BigDecimal(5000)));
+            Producto producto2 = productoRepository.save(new Producto(marca2,categoria2,productoR2.generarCodigo(),"Taladro estandar",new BigDecimal(30000)));
+
+            sucursalRepository.findAll().forEach(sucursalS ->{
+                sucursalStockPRepository.save(new SucursalStockP(producto1,sucursalS,10));
+                sucursalStockPRepository.save(new SucursalStockP(producto2,sucursalS,10));
+            });
+
+            precioPHistorialRepository.save(new PrecioPHistorial(producto1,producto1.getPrecioP()));
+            precioPHistorialRepository.save(new PrecioPHistorial(producto2,producto2.getPrecioP()));
         }
+        
         
 
 

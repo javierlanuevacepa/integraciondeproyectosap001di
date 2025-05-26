@@ -59,6 +59,10 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
+    public List<Producto> listarProductoConFiltros(String nombreP,String codigoP,String categoriaP,String marcaP,Integer stockMaximo){
+        return productoRepository.buscarPorFiltros(nombreP,codigoP,categoriaP, marcaP, stockMaximo);
+    }
+
 
 
     public void eliminarProductoConId(Long id){
