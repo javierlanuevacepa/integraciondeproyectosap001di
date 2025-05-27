@@ -31,6 +31,7 @@ public class ProductoRDTO {
         char nom = Character.toUpperCase(nombreP.charAt(0));
         char cat = Character.toUpperCase(categoria.charAt(0));
         char mar = Character.toUpperCase(marca.charAt(0));
+        // Reemplazar por milisegundos y dias
         String anio = String.valueOf(LocalDate.now().getYear()).substring(2);
         String mes = String.format("%02d", LocalDate.now().getMonthValue());
         int precioEntero = precioP.intValue();

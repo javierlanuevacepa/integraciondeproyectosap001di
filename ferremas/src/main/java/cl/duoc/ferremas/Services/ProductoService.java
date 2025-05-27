@@ -68,13 +68,41 @@ public class ProductoService {
         
         historialP.setFechaFin(LocalDate.now());
         historialP.setHoraFin(LocalTime.now());
-        
+
         precioPHistorialService.registrarHistorialPrecioP(producto);
         
         return producto;
 
     }
 
+    public Producto actualizarProducto(Long id, ProductoRDTO productoRdto){
+        Producto producto = productoRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Producto con id " + id + " no encontrado."));
+
+        if (productoRdto.getMarca()!=null){
+            Marca marca = marcaRepository.findByNombreMarcaContainingIgnoreCase(productoRdto.getMarca())
+            .orElseThrow(() -> new EntityNotFoundException("Marca con nombre " + productoRdto.getMarca() + " no encontrado."));
+            producto.setMarcaP(marca);
+        }
+
+        if (productoRdto.getCategoria()!=null){
+            Categoria categoria = categoriaRepository.findByNombreCategoria(productoRdto.getCategoria())
+            .orElseThrow(() -> new EntityNotFoundException("Categoria con nombre " + productoRdto.getCategoria() + " no encontrado."));
+            producto.setCategoriaP(categoria);
+        }
+
+        if (productoRdto.getNombreP()!=null){
+            producto.setNombreProducto(productoRdto.getNombreP());
+        }
+
+        if (productoRdto.getPrecioP()!=null){
+            
+        }
+
+
+
+        return null;
+    }
 
 
     public List<Producto> listarProductos(){
