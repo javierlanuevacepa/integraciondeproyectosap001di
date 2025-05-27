@@ -1,5 +1,6 @@
 package cl.duoc.ferremas.Services;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cl.duoc.ferremas.Models.Categoria;
 import cl.duoc.ferremas.Models.Marca;
+import cl.duoc.ferremas.Models.PrecioPHistorial;
 import cl.duoc.ferremas.Models.Producto;
 import cl.duoc.ferremas.Models.Sucursal;
 import cl.duoc.ferremas.Models.SucursalStockP;
@@ -53,6 +55,26 @@ public class ProductoService {
         return productoRepository.findById(nuevoP.getIdProducto())
         .orElseThrow(() -> new EntityNotFoundException("Codigo con id "+nuevoP.getIdProducto()+" no encotrado."));
     }
+
+
+    public Producto actualizarPrecio(Long id,BigDecimal nuevoPrecio){
+        Producto producto = productoRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Producto con id " + id + " no encontrado."));
+        
+        producto.setPrecioP(nuevoPrecio);
+        productoRepository.save(producto);
+
+        PrecioPHistorial historialP = precioPHistorialService.encontrarPHistorialMasRecientePorProductoId(id);
+        
+        historialP.setFechaFin(LocalDate.now());
+        historialP.setHoraFin(LocalTime.now());
+        
+        precioPHistorialService.registrarHistorialPrecioP(producto);
+        
+        return producto;
+
+    }
+
 
 
     public List<Producto> listarProductos(){

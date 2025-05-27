@@ -14,4 +14,8 @@ import java.util.List;
 @Repository
 public interface PrecioPHistorialRepository extends JpaRepository<PrecioPHistorial,Long>{
     
+    public PrecioPHistorial findByProductoIdProducto(Long idProducto);
+
+    
+    PrecioPHistorial findTopByProductoIdProductoOrderByFechaRegistroDescHoraRegistroDesc(Long idProducto);
 }
