@@ -96,6 +96,15 @@ public class Producto {
         this.horaRegistro = LocalTime.now();
     }
 
+    public Producto( Marca marcaP, Categoria categoriaP, String nombreProducto, BigDecimal precioP) {
+        this.marcaP = marcaP;
+        this.categoriaP = categoriaP;
+        this.nombreProducto = nombreProducto;
+        this.precioP = precioP;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
+    }
+
     public Long getIdProducto() {
         return this.idProducto;
     }

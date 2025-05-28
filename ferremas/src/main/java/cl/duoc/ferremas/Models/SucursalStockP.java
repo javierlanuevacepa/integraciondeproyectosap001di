@@ -88,6 +88,11 @@ public class SucursalStockP {
         this.producto = producto;
     }
 
+    public String getNombreSucursal(){
+        return this.sucursal.getNombreSucursal();
+    }
+
+
     public Sucursal getSucursal() {
         return this.sucursal;
     }

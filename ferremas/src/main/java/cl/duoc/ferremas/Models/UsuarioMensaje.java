@@ -3,6 +3,8 @@ package cl.duoc.ferremas.Models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 
@@ -15,10 +17,12 @@ public class UsuarioMensaje {
     private Long idMensaje;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_cliente", nullable = false)
     private Usuario cliente;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_empleado", nullable = false)
     private Empleado empleado;
 
@@ -56,6 +60,15 @@ public class UsuarioMensaje {
     public Usuario getCliente() {
         return this.cliente;
     }
+
+    public Long getIdVendedor(){
+        return this.empleado.getIdEmpleado();
+    }
+
+    public Long getIdUsuario(){
+        return this.cliente.getIdUsuario();
+    }
+
 
     public void setCliente(Usuario cliente) {
         this.cliente = cliente;

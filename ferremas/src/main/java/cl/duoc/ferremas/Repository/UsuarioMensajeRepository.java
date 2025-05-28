@@ -11,9 +11,13 @@ import java.util.List;
 
 @Repository
 public interface UsuarioMensajeRepository extends JpaRepository<UsuarioMensaje, Long> {
-    // Buscar todos los mensajes recibidos por un vendedor
-   // List<UsuarioMensaje> findByEmpleadoIdEmpleado(Long idEmpleado);
 
-    // Buscar todos los mensajes enviados por un cliente
-    //List<UsuarioMensaje> findByUsuarioIdUsuario(Long idUsuario);
+   // Consultas desde el punto de vista del usuario
+    List<UsuarioMensaje> findByClienteIdUsuario(Long idUsuario);
+
+    // Consultas desde el punto de vista del vendedor
+    List<UsuarioMensaje> findByEmpleadoIdEmpleado(Long idEmpleado);
+
+    // O conversaciones entre ambos
+    List<UsuarioMensaje> findByClienteIdUsuarioAndEmpleadoIdEmpleado(Long idUsuario, Long idVendedor);
 }

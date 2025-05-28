@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -61,6 +62,7 @@ public class Empleado {
     private LocalTime horaRegistro;
 
     @OneToMany(mappedBy = "empleado")
+    @JsonManagedReference
     private List<UsuarioMensaje> mensajesRecibidos;
 
    

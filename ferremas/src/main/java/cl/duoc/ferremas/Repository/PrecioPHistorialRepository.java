@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 
 
@@ -14,8 +15,8 @@ import java.util.List;
 @Repository
 public interface PrecioPHistorialRepository extends JpaRepository<PrecioPHistorial,Long>{
     
-    public PrecioPHistorial findByProductoIdProducto(Long idProducto);
+    public List<PrecioPHistorial> findByProductoIdProducto(Long idProducto);
 
     
-    PrecioPHistorial findTopByProductoIdProductoOrderByFechaRegistroDescHoraRegistroDesc(Long idProducto);
+    public Optional<PrecioPHistorial> findTopByProductoIdProductoOrderByFechaRegistroDescHoraRegistroDesc(Long idProducto);
 }

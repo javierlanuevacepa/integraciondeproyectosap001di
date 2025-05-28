@@ -47,7 +47,7 @@ public class ProductoService {
     public Producto registrarProducto(ProductoRDTO productoRdto){
         Marca marcaP = marcaRepository.findByNombreMarcaContainingIgnoreCase(productoRdto.getMarca())
         .orElseThrow(() -> new EntityNotFoundException("Marca con nombre" + productoRdto.getMarca() + " no encontrada."));
-        Categoria categoriaP = categoriaRepository.findByNombreCategoria(productoRdto.getCategoria())
+        Categoria categoriaP = categoriaRepository.findByNombreCategoriaContainingIgnoreCase(productoRdto.getCategoria())
         .orElseThrow(() -> new EntityNotFoundException("Categoria con nombre " + productoRdto.getCategoria() + " no encontrada."));
         Producto nuevoP = productoRepository.save(new Producto(marcaP,categoriaP,productoRdto.generarCodigo(),productoRdto.getNombreP(),productoRdto.getPrecioP()));
         sucursalStockPService.registrarSucursalTodasStockP(nuevoP, productoRdto.getCantidadStock());
@@ -56,52 +56,56 @@ public class ProductoService {
         .orElseThrow(() -> new EntityNotFoundException("Codigo con id "+nuevoP.getIdProducto()+" no encotrado."));
     }
 
-
-    public Producto actualizarPrecio(Long id,BigDecimal nuevoPrecio){
-        Producto producto = productoRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Producto con id " + id + " no encontrado."));
-        
-        producto.setPrecioP(nuevoPrecio);
-        productoRepository.save(producto);
-
-        PrecioPHistorial historialP = precioPHistorialService.encontrarPHistorialMasRecientePorProductoId(id);
-        
-        historialP.setFechaFin(LocalDate.now());
-        historialP.setHoraFin(LocalTime.now());
-
-        precioPHistorialService.registrarHistorialPrecioP(producto);
-        
-        return producto;
-
+    //Este usarlo solo en caso puntual.
+    public void actualizarPrecioProducto(Long id,BigDecimal precioActualizado){
+        Producto productoC = productoRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con ID: " + id));
+        PrecioPHistorial precioHistorialOld = precioPHistorialService.encontrarPHistorialMasRecientePorProductoId(id);
+        precioHistorialOld.setFechaFin(LocalDate.now());
+        precioHistorialOld.setHoraFin(LocalTime.now());
+        productoC.setPrecioP(precioActualizado);
+        productoRepository.save(productoC);
+        precioPHistorialService.registrarHistorialPrecioP(productoC);
     }
 
-    public Producto actualizarProducto(Long id, ProductoRDTO productoRdto){
-        Producto producto = productoRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Producto con id " + id + " no encontrado."));
+    public Producto actualizarProducto(Long idProducto,ProductoRDTO product){
 
-        if (productoRdto.getMarca()!=null){
-            Marca marca = marcaRepository.findByNombreMarcaContainingIgnoreCase(productoRdto.getMarca())
-            .orElseThrow(() -> new EntityNotFoundException("Marca con nombre " + productoRdto.getMarca() + " no encontrado."));
-            producto.setMarcaP(marca);
+        Producto productoC = productoRepository.findById(idProducto)
+        .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con ID: " + idProducto));
+
+        if (product.getCategoria()!=null){
+            Categoria cate = categoriaRepository.findByNombreCategoriaContainingIgnoreCase(product.getCategoria())
+            .orElseThrow(() -> new EntityNotFoundException("Categoria con nombre: " +product.getCategoria()+" no encontrada."));
+            productoC.setCategoriaP(cate);
         }
 
-        if (productoRdto.getCategoria()!=null){
-            Categoria categoria = categoriaRepository.findByNombreCategoria(productoRdto.getCategoria())
-            .orElseThrow(() -> new EntityNotFoundException("Categoria con nombre " + productoRdto.getCategoria() + " no encontrado."));
-            producto.setCategoriaP(categoria);
+        if (product.getMarca()!=null){
+            Marca mark = marcaRepository.findByNombreMarcaContainingIgnoreCase(product.getMarca())
+            .orElseThrow(() -> new EntityNotFoundException("Marca con nombre: " +product.getMarca()+" no encontrada."));
+            productoC.setMarcaP(mark);
         }
 
-        if (productoRdto.getNombreP()!=null){
-            producto.setNombreProducto(productoRdto.getNombreP());
+        if (product.getNombreP()!=null){
+            productoC.setNombreProducto(product.getNombreP());
         }
 
-        if (productoRdto.getPrecioP()!=null){
-            
+        if (product.getPrecioP()!=null){
+            if (product.getPrecioP()!=productoC.getPrecioP()){
+                precioPHistorialService.finalizarHistorialPrecio(idProducto);
+                productoC.setPrecioP(product.getPrecioP());
+                precioPHistorialService.registrarHistorialPrecioP(productoC);
+            }
         }
+        return productoRepository.save(productoC);
+    }
 
-
-
-        return null;
+    public Producto actualizarPrecioP(Long idProducto,BigDecimal precioAct){
+        Producto productoC = productoRepository.findById(idProducto)
+        .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con ID: " + idProducto));
+        precioPHistorialService.finalizarHistorialPrecio(idProducto);
+        productoC.setPrecioP(precioAct);
+        precioPHistorialService.registrarHistorialPrecioP(productoC);
+        return productoRepository.save(productoC);
     }
 
 
@@ -113,9 +117,9 @@ public class ProductoService {
         return productoRepository.buscarPorFiltros(nombreP,codigoP,categoriaP, marcaP, stockMaximo);
     }
 
-
-
     public void eliminarProductoConId(Long id){
+        precioPHistorialService.eliminarHistorialDePrecios(id);
+        sucursalStockPService.eliminarConIdProducto(id);
         productoRepository.deleteById(id);
     }
 

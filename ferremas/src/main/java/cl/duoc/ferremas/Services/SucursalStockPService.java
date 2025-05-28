@@ -43,6 +43,9 @@ public class SucursalStockPService {
         return sucursalStockRepository.save(sucurP);
     }
 
+    public void eliminarConIdProducto(Long id){
+        sucursalStockRepository.deleteAll(sucursalStockRepository.findByProductoIdProducto(id));
+    }
 
 
 

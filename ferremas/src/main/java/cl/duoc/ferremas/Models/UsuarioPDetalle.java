@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "u_pedido_detalle")
@@ -14,11 +16,13 @@ public class UsuarioPDetalle {
     private UPedidoDetalleId id = new UPedidoDetalleId();
 
     @ManyToOne
+    @JsonBackReference
     @MapsId("idPedido")
     @JoinColumn(name = "id_pedido")
     private UsuarioPedido pedido;
     
     @ManyToOne
+    @JsonBackReference
     @MapsId("idProducto")
     @JoinColumn(name = "id_producto")
     private Producto producto;

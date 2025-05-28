@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "usuario")
@@ -29,6 +31,7 @@ public class Usuario {
     private LocalTime horaRegistro;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
     private List<UsuarioMensaje> mensajesEnviados;
 
     
@@ -46,12 +49,18 @@ public class Usuario {
     }
 
     public Usuario( String correoUsuario, String contrasena, LocalDate fechaRegistro, LocalTime horaRegistro, List<UsuarioMensaje> mensajesEnviados) {
-
         this.correoUsuario = correoUsuario;
         this.contrasena = contrasena;
         this.fechaRegistro = fechaRegistro;
         this.horaRegistro = horaRegistro;
         this.mensajesEnviados = mensajesEnviados;
+    }
+
+    public Usuario( String correoUsuario, String contrasena) {
+        this.correoUsuario = correoUsuario;
+        this.contrasena = contrasena;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public Long getIdUsuario() {

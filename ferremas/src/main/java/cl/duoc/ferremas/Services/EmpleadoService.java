@@ -7,6 +7,7 @@ import cl.duoc.ferremas.Models.Sucursal;
 import cl.duoc.ferremas.Models.ModelsDTO.EmpleadoRDTO;
 import cl.duoc.ferremas.Repository.EmpleadoRepository;
 import cl.duoc.ferremas.Repository.EmpleadoRolRepository;
+import cl.duoc.ferremas.Repository.UsuarioMensajeRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
@@ -23,14 +24,18 @@ public class EmpleadoService {
 
     private final EmpleadoRepository empleadoRepository;
 
+
     private final SucursalService sucursalService;
 
     private final EmpleadoRolRepository empleadoRolRepository;
 
-    public EmpleadoService(EmpleadoRepository empleadoRepository,SucursalService sucursalService,EmpleadoRolRepository empleadoRolRepository){
+    private final UsuarioMensajeRepository usuarioMensajeRepository;
+
+    public EmpleadoService(EmpleadoRepository empleadoRepository,SucursalService sucursalService,EmpleadoRolRepository empleadoRolRepository,UsuarioMensajeRepository usuarioMensajeRepository){
         this.empleadoRepository = empleadoRepository;
         this.sucursalService = sucursalService;
         this.empleadoRolRepository = empleadoRolRepository;
+        this.usuarioMensajeRepository = usuarioMensajeRepository;
     }
 
 

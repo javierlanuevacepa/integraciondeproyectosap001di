@@ -27,19 +27,37 @@ public class ProductoRDTO {
         this.cantidadStock = cantidadStock;
     }
 
-    public String generarCodigo() {
-        char nom = Character.toUpperCase(nombreP.charAt(0));
-        char cat = Character.toUpperCase(categoria.charAt(0));
-        char mar = Character.toUpperCase(marca.charAt(0));
-        // Reemplazar por milisegundos y dias
-        String anio = String.valueOf(LocalDate.now().getYear()).substring(2);
-        String mes = String.format("%02d", LocalDate.now().getMonthValue());
-        int precioEntero = precioP.intValue();
-        String precioCorto = String.format("%02d", ((int) precioEntero) % 100);
-        // Generar un hash único de 4 caracteres basado en UUID
-        String uniqueHash = UUID.randomUUID().toString().replace("-", "").substring(0, 4).toUpperCase();
-        return "" + nom + cat + mar + anio + mes + precioCorto + "-" + uniqueHash;
+    public ProductoRDTO(String marca, String categoria,  String nombreP, BigDecimal precioP) {
+        this.marca = marca;
+        this.categoria = categoria;
+        this.nombreP = nombreP;
+        this.precioP = precioP;
     }
+
+    //public String generarCodigo(Long idSupuesto) {
+    //    char nom = Character.toUpperCase(nombreP.charAt(0));
+    //    char cat = Character.toUpperCase(categoria.charAt(0));
+    //    char mar = Character.toUpperCase(marca.charAt(0));
+    //    // Reemplazar por milisegundos y dias
+    //    String anio = String.valueOf(LocalDate.now().getYear()).substring(2);
+    //    String mes = String.format("%02d", LocalDate.now().getMonthValue());
+    //    int precioEntero = precioP.intValue();
+    //    String precioCorto = String.format("%02d", ((int) precioEntero) % 100);
+    //    // Generar un hash único de 4 caracteres basado en UUID
+    //    String uniqueHash = UUID.randomUUID().toString().replace("-", "").substring(0, 4).toUpperCase();
+    //    return "" + nom + cat + ++idSupuesto + mar + anio + mes + precioCorto + "-" + uniqueHash;
+    //}
+
+    public String generarCodigo() {
+    char nom = Character.toUpperCase(nombreP.charAt(0));
+    char cat = Character.toUpperCase(categoria.charAt(0));
+    char mar = Character.toUpperCase(marca.charAt(0));
+    int precioEntero = precioP.intValue();
+    String precioFragmento = String.format("%02d", precioEntero % 100);
+    long tiempoMillis = System.currentTimeMillis();
+    String hash = UUID.randomUUID().toString().replace("-", "").substring(0, 4).toUpperCase();
+    return "" + nom + cat + mar + precioFragmento + "-" + tiempoMillis + hash;
+    }   
 
 
     public int getCantidadStock(){
