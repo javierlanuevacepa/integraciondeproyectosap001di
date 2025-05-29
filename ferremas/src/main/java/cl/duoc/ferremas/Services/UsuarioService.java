@@ -20,12 +20,12 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    private final UsuarioMensajeRepository usuarioMensajeRepository;
+   
 
 
-    public UsuarioService(UsuarioRepository usuarioRepository,UsuarioMensajeRepository usuarioMensajeRepository){
+    public UsuarioService(UsuarioRepository usuarioRepository){
         this.usuarioRepository = usuarioRepository;
-        this.usuarioMensajeRepository = usuarioMensajeRepository;
+
     }
 
 
@@ -57,6 +57,8 @@ public class UsuarioService {
         }
         return usuarioRepository.save(user);
     }
+
+
 
 
 

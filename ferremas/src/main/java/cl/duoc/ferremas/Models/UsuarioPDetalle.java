@@ -16,13 +16,13 @@ public class UsuarioPDetalle {
     private UPedidoDetalleId id = new UPedidoDetalleId();
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("pedido-detalle")
     @MapsId("idPedido")
     @JoinColumn(name = "id_pedido")
     private UsuarioPedido pedido;
     
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("detalle-producto")
     @MapsId("idProducto")
     @JoinColumn(name = "id_producto")
     private Producto producto;
@@ -46,6 +46,15 @@ public class UsuarioPDetalle {
         this.precioUnitario = precioUnitario;
         this.fechaRegistro = fechaRegistro;
         this.horaRegistro = horaRegistro;
+    }
+
+    public UsuarioPDetalle( UsuarioPedido pedido, Producto producto, Integer cantidad, BigDecimal precioUnitario) {
+        this.pedido = pedido;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
     }
 
     public UPedidoDetalleId getId() {

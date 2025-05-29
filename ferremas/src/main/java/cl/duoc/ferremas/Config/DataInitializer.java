@@ -17,6 +17,7 @@ import cl.duoc.ferremas.Models.Categoria;
 import cl.duoc.ferremas.Models.Empleado;
 import cl.duoc.ferremas.Models.Sucursal;
 import cl.duoc.ferremas.Models.SucursalStockP;
+import cl.duoc.ferremas.Models.Usuario;
 import cl.duoc.ferremas.Models.ModelsDTO.ProductoRDTO;
 
 
@@ -33,12 +34,14 @@ public class DataInitializer implements CommandLineRunner {
     private final ProductoRepository productoRepository;
     private final SucursalStockPRepository sucursalStockPRepository;
     private final PrecioPHistorialRepository precioPHistorialRepository;
+    private final UsuarioRepository usuarioRepository;
 
 
 
     public DataInitializer(EmpleadoRolRepository empleadoRolRepository,SucursalRepository sucursalRepository,
     EmpleadoRepository empleadoRepository,MarcaRepository marcaRepository,CategoriaRepository categoriaRepository,
-    ProductoRepository productoRepository,SucursalStockPRepository sucursalStockPRepository,PrecioPHistorialRepository precioPHistorialRepository) {
+    ProductoRepository productoRepository,SucursalStockPRepository sucursalStockPRepository,PrecioPHistorialRepository precioPHistorialRepository,
+    UsuarioRepository usuarioRepository) {
         this.empleadoRolRepository = empleadoRolRepository;
         this.sucursalRepository = sucursalRepository;
         this.empleadoRepository = empleadoRepository;
@@ -47,6 +50,7 @@ public class DataInitializer implements CommandLineRunner {
         this.productoRepository = productoRepository;
         this.sucursalStockPRepository = sucursalStockPRepository;
         this.precioPHistorialRepository = precioPHistorialRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
 
@@ -58,7 +62,7 @@ public class DataInitializer implements CommandLineRunner {
 
 
         if (empleadoRolRepository.count() == 0 && marcaRepository.count() == 0 && categoriaRepository.count() == 0 && sucursalRepository.count() == 0
-           && productoRepository.count() == 0) {
+           && productoRepository.count() == 0 && usuarioRepository.count() == 0) {
             empleadoRolRepository.save(new EmpleadoRol("Administrador", LocalDate.now(), LocalTime.now()));
             empleadoRolRepository.save(new EmpleadoRol("Vendedor/Encargado", LocalDate.now(), LocalTime.now()));
             empleadoRolRepository.save(new EmpleadoRol("Bodeguero", LocalDate.now(), LocalTime.now()));
@@ -131,6 +135,13 @@ public class DataInitializer implements CommandLineRunner {
 
             precioPHistorialRepository.save(new PrecioPHistorial(producto1,producto1.getPrecioP()));
             precioPHistorialRepository.save(new PrecioPHistorial(producto2,producto2.getPrecioP()));
+
+
+            usuarioRepository.save(new Usuario("ja.gonzalezb@duouc.cl","123"));
+
+            
+
+
         }
         
         

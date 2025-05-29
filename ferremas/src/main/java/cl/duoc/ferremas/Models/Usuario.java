@@ -34,8 +34,15 @@ public class Usuario {
     @JsonManagedReference
     private List<UsuarioMensaje> mensajesEnviados;
 
-    
 
+
+    @OneToMany(mappedBy = "clientePedido")
+    @JsonManagedReference("usuario-pedido")
+    private List<UsuarioPedido> pedidosUsuario;
+
+
+
+    
     public Usuario() {
     }
 

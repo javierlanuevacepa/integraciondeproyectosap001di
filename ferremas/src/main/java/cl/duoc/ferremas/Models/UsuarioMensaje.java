@@ -49,6 +49,14 @@ public class UsuarioMensaje {
         this.horaRegistro = horaRegistro;
     }
 
+    public UsuarioMensaje( Usuario cliente, Empleado empleado, String contenido) {
+        this.cliente = cliente;
+        this.empleado = empleado;
+        this.contenido = contenido;
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
+    }
+
     public Long getIdMensaje() {
         return this.idMensaje;
     }

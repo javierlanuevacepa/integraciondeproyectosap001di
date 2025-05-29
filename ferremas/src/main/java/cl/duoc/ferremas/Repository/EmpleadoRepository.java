@@ -4,8 +4,7 @@ import cl.duoc.ferremas.Models.Empleado;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -22,6 +21,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado,Long>{
     // Encontrar empleados con id sucursal
     List<Empleado> findBySucursalEmpleadoIdSucursal(Long idSucursal);
 
-    
+    // ENcontrar con sucursal id y nombre de rol
+    List<Empleado> findBySucursalEmpleadoIdSucursalAndRolEmpleadoDescripcionRol(Long idSucursal, String descripcionRol);
     
 }

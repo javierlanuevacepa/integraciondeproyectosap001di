@@ -59,6 +59,11 @@ public class Producto {
     @JsonManagedReference
     private List<PrecioPHistorial> historialPrecios = new ArrayList<>();
 
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("detalle-producto")
+    private List<UsuarioPDetalle> detallePedidoP = new ArrayList<>();
+
+
 
     public Producto() {
     }

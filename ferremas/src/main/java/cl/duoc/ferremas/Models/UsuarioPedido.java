@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -16,6 +18,13 @@ public class UsuarioPedido {
     @Column(name = "id_pedido")
     private Long idPedido;
 
+
+    @ManyToOne
+    @JsonBackReference("usuario-pedido")
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Usuario clientePedido;
+
+
     @Column(name = "estado", nullable = false)
     private String estadoPedido; // PENDIENTE , ACEPTADO, RECHAZADO
 
@@ -26,7 +35,7 @@ public class UsuarioPedido {
     private LocalTime horaRegistro;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("pedido-detalle")
     private List<UsuarioPDetalle> detalles = new ArrayList<>();
 
   
@@ -42,10 +51,11 @@ public class UsuarioPedido {
         this.detalles = detalles;
     }
 
-    public UsuarioPedido( String estadoPedido, LocalDate fechaRegistro, LocalTime horaRegistro, List<UsuarioPDetalle> detalles) {
-        this.estadoPedido = estadoPedido;
-        this.fechaRegistro = fechaRegistro;
-        this.horaRegistro = horaRegistro;
+    public UsuarioPedido( Usuario clientePedido, List<UsuarioPDetalle> detalles) {
+        this.clientePedido = clientePedido;
+        this.estadoPedido = "PENDIENTE";
+        this.fechaRegistro = LocalDate.now();
+        this.horaRegistro = LocalTime.now();
         this.detalles = detalles;
     }
 
@@ -53,8 +63,18 @@ public class UsuarioPedido {
         return this.idPedido;
     }
 
+
+
     public void setIdPedido(Long idPedido) {
         this.idPedido = idPedido;
+    }
+
+    public Usuario getClientePedido(){
+        return this.clientePedido;
+    }
+
+    public void setClientePedido(Usuario usuario){
+        this.clientePedido = usuario;
     }
 
     public String getEstadoPedido() {
